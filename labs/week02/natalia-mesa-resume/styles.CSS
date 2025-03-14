@@ -1,0 +1,55 @@
+img {
+        width: 180px;
+        border-radius: 1px;
+        border: 3px solid darkgreen; /* Adds a black border with 2px thickness */
+  
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    padding: 0;
+    color: black;
+}
+
+h1, h2, h3 {
+    color: olivedrab ;
+}
+
+h1 {
+    color: darkgreen;
+    font-size: 36px; /* Increases the font size */
+    font-weight: bold; /* Makes the text bold */
+    text-align: left; /* Centers the text */
+}
+
+h2{
+    text-decoration: underline;
+    color: darkolivegreen
+}
+a {
+    color: blue;
+}
+
+h3 {
+    color: olivedrab
+}
+h4 {
+    text-align: center;
+
+}
+
+
+.objective {
+    font-style: italic;
+    color: black;}
+
+    hr {
+         border: 1px solid darkgreen;
+        margin: 10px 0;
+    }
+
+.indent {
+    margin-left: 20px;
+}
