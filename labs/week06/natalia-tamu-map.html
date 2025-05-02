@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Natalia TAMU Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+
+  <style>
+    #mapid {
+      height: 600px;
+      width: 100%;
+    }
+    .info {
+      padding: 6px 8px;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+    }
+    .info h4 {
+      margin: 0 0 5px;
+      color: #800000;
+    }
+  </style>
+</head>
+<body>
+
+<div id="mapid"></div>
+
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+
+<script src="https://raw.githubusercontent.com/tamu-edu-students/2025-TAMU-GEOG-678-WebGIS-MGsc/refs/heads/main/labs/tamubuildings.js"></script>
+
+<script>
+  var map = L.map('mapid').setView([30.617, -96.336], 16);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  var info = L.control();
+  info.onAdd = function(map) {
+    this._div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this._div;
+  };
+  info.update = function(props) {
+    this._div.innerHTML = '<h4>BldgName and BldgAbbr</h4>' +
+      (props ? '<b>' + props.BldgName + '</b><br/>' + props.BldgAbbr : 'Hover over a building');
+  };
+  info.addTo(map);
+
+  function buildingStyle(feature) {
+    return {
+      color: "#800000",
+      weight: 1,
+      fillOpacity: 0.7
+    };
+  }
+
+  function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle({
+      weight: 3,
+      color: '#FFD700',  // gold border
+      fillOpacity: 1
+    });
+    layer.bringToFront();
+    info.update(layer.feature.properties);
+  }
+
+  function resetHighlight(e) {
+    var layer = e.target;
+    layer.setStyle({
+      color: "#800000",
+      weight: 1,
+      fillOpacity: 0.7
+    });
+    info.update();
+  }
+
+  function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+  }
+
+  function onEachBuilding(feature, layer) {
+    layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToFeature
+    });
+  }
+
+  var buildings = L.geoJSON(tamu, {
+    style: buildingStyle,
+    onEachFeature: onEachBuilding
+  }).addTo(map);
+</script>
+
+</body>
+</html>
